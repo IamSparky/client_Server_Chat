@@ -1,0 +1,26 @@
+import socket
+import threading
+
+s=socket.socket()
+host=socket.gethostname()
+
+port=8080
+s.bind((host,port))
+
+s.listen(1)
+conn,addr=s.accept()
+
+def send():
+    while 1:
+        message=input(str('>>'))
+        message=message.encode()
+        conn.send(message)
+def receive():
+    while 1:
+        incoming_message=conn.recv(1024)
+        incoming_message =incoming_message.decode()
+        print("Client :",incoming_message)
+        
+threading.Thread(target=send).start()
+receive()
+
